@@ -1,4 +1,4 @@
 interface:
   display_name: "Inner Voice — English"
-  short_description: "Rephrase harsh self-talk with precision"
-  default_prompt: "Use $inner-voice-en to rephrase this harsh thought without forcing positivity."
+  short_description: "Catch when a situation becomes a verdict about you"
+  default_prompt: "Use $inner-voice-en to name how this thought changed, then put the observable fact back without forced positivity."

@@ -52,7 +52,11 @@ test("English skill keeps restraint, factual accuracy, privacy, and safety", asy
   const markdown = await text(skillPaths.codexEn);
   for (const phrase of [
     "once per conversation",
-    "directly observable details",
+    "The subject changed",
+    "The scope widened",
+    "The time frame expanded",
+    "A guess became a fact",
+    "supported facts",
     "Do not correct ordinary negative facts",
     "Accuracy is not absolution",
     "Never use generic reassurance",
@@ -65,7 +69,11 @@ test("Chinese skill keeps restraint, factual accuracy, privacy, and safety", asy
   const markdown = await text(skillPaths.codexZh);
   for (const phrase of [
     "每次对话通常触发一次",
-    "可以直接观察",
+    "刚才主语换了",
+    "范围扩大了",
+    "时间被拉长了",
+    "猜测变成了事实",
+    "已有证据支持",
     "不要纠正",
     "准确不等于开脱",
     "不要使用",
@@ -92,12 +100,21 @@ test("READMEs document current Codex and Claude Code install locations", async (
   }
 });
 
+test("READMEs lead with the signature situation-to-verdict demonstration", async () => {
+  const en = await text("README.md");
+  const zh = await text("README.zh-CN.md");
+  assert.match(en, /The subject changed/);
+  assert.match(en, /Not reassurance/);
+  assert.match(zh, /刚才主语换了/);
+  assert.match(zh, /它不是安慰/);
+});
+
 test("evaluation cases cover triggers, non-triggers, both languages, and safety", async () => {
   const cases = (await text("evals/cases.jsonl"))
     .trim()
     .split("\n")
     .map((line) => JSON.parse(line));
-  assert.equal(cases.length, 9);
+  assert.equal(cases.length, 11);
   assert.ok(cases.some((item) => item.language === "en" && item.mode === "no-fire"));
   assert.ok(cases.some((item) => item.language === "zh" && item.mode === "no-fire"));
   assert.ok(cases.some((item) => item.mode === "safety"));

@@ -2,15 +2,19 @@
 
 [中文说明](README.zh-CN.md)
 
-Skills for Codex and Claude Code that notice when a situation turns into a verdict about the person living through it—and quietly put the fact back.
+Skills for Codex and Claude Code that catch the moment a situation becomes a verdict about you.
 
 ```text
-"I'm useless."            →  "I had no income this month."
-"I never finish things."  →  "I stopped halfway on this one."
-"I'm too lazy for this."  →  "I couldn't get started today."
+You: "I haven't made money yet. I'm worthless."
+
+Inner Voice:
+"The subject changed: 'I haven't made money yet' became 'I'm worthless.'
+Put the fact back: I haven't made money yet."
 ```
 
-Same event. One version has an exit.
+**Not reassurance.** It names the linguistic shift once, puts the observable fact back, and gets out of the way.
+
+Codex + Claude Code · English + 中文 · No tracking or logging · No therapy voice · No forced positivity
 
 ## Choose a skill
 
@@ -74,7 +78,7 @@ If a newly created skills directory is not detected in an already-open session, 
 - **Catastrophe:** a painful moment becomes the entire future.
 - **Mind-reading:** an assumption about another person's thoughts becomes a fact.
 
-During an ordinary conversation, the skill responds with one precise sentence and then returns to the user's actual topic. When the user explicitly asks for a rewrite, it can briefly separate the observable fact from the added conclusion.
+During an ordinary conversation, the skill uses one compact intervention: it names the exact shift, puts the fact back, and then returns to the user's actual topic. When the user explicitly asks for a rewrite, it can briefly show more structure.
 
 ## What it does not do
 
