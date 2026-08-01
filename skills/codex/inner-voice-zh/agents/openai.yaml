@@ -1,0 +1,4 @@
+interface:
+  display_name: "Inner Voice — 中文"
+  short_description: "把苛刻内心话改写成准确且不灌鸡汤的表达"
+  default_prompt: "使用 $inner-voice-zh，把这句苛刻的内心话改写得更准确，不要强行积极。"
