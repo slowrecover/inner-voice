@@ -1,4 +1,4 @@
 interface:
   display_name: "Inner Voice — English"
-  short_description: "Catch when a situation becomes a verdict about you"
-  default_prompt: "Use $inner-voice-en to name how this thought changed, then put the observable fact back without forced positivity."
+  short_description: "Catch obvious and hidden self-verdicts"
+  default_prompt: "Use $inner-voice-en to notice when a situation, comparison, feeling, or hidden rule becomes a verdict about me, name the shift, and put the observable fact back without forced positivity."

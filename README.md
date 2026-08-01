@@ -77,6 +77,9 @@ If a newly created skills directory is not detected in an already-open session, 
 - **Always / never:** one or several events become an unchangeable rule.
 - **Catastrophe:** a painful moment becomes the entire future.
 - **Mind-reading:** an assumption about another person's thoughts becomes a fact.
+- **Comparison verdict:** someone else's visible progress becomes evidence that you are failing.
+- **Feeling as proof:** feeling stuck or incapable becomes proof that you are.
+- **Hidden rules:** an assumed `should` or `must` timeline becomes a judgment about you.
 
 During an ordinary conversation, the skill uses one compact intervention: it names the exact shift, puts the fact back, and then returns to the user's actual topic. When the user explicitly asks for a rewrite, it can briefly show more structure.
 

@@ -1,4 +1,4 @@
 interface:
   display_name: "Inner Voice — 中文"
-  short_description: "抓住处境变成自我判决的那一刻"
-  default_prompt: "使用 $inner-voice-zh，说清这句内心话发生了什么变化，再把可以观察的事实放回来，不要强行积极。"
+  short_description: "抓住明显和隐蔽的自我判决"
+  default_prompt: "使用 $inner-voice-zh，留意处境、比较、感受或隐形规则何时变成了对我的判决，说清变化，再把事实放回来，不要强行积极。"

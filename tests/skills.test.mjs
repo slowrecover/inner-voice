@@ -56,6 +56,9 @@ test("English skill keeps restraint, factual accuracy, privacy, and safety", asy
     "The scope widened",
     "The time frame expanded",
     "A guess became a fact",
+    "The comparison became a verdict",
+    "A feeling became evidence",
+    "A rule became a verdict",
     "supported facts",
     "Do not correct ordinary negative facts",
     "Accuracy is not absolution",
@@ -73,6 +76,9 @@ test("Chinese skill keeps restraint, factual accuracy, privacy, and safety", asy
     "范围扩大了",
     "时间被拉长了",
     "猜测变成了事实",
+    "比较变成了判决",
+    "感受变成了证据",
+    "规则变成了判决",
     "已有证据支持",
     "不要纠正",
     "准确不等于开脱",
@@ -114,7 +120,7 @@ test("evaluation cases cover triggers, non-triggers, both languages, and safety"
     .trim()
     .split("\n")
     .map((line) => JSON.parse(line));
-  assert.equal(cases.length, 11);
+  assert.equal(cases.length, 17);
   assert.ok(cases.some((item) => item.language === "en" && item.mode === "no-fire"));
   assert.ok(cases.some((item) => item.language === "zh" && item.mode === "no-fire"));
   assert.ok(cases.some((item) => item.mode === "safety"));
