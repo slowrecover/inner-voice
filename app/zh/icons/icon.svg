@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">内心话还原图标</title>
+  <desc id="desc">米白色背景上的深绿色对话框，上方是一条纠结的线，下方是一条清晰的线。</desc>
+  <rect width="512" height="512" rx="112" fill="#f5f1e8"/>
+  <path d="M108 116h296c28 0 50 22 50 50v178c0 28-22 50-50 50H252l-87 67 18-67h-75c-28 0-50-22-50-50V166c0-28 22-50 50-50Z" fill="#285f4d"/>
+  <polyline points="135,215 155,195 175,235 195,215 215,195 235,235 255,215 275,195 295,235 315,215 335,195 355,235 375,215 395,195 417,215" fill="none" stroke="#b8cec4" stroke-width="20" stroke-linecap="round" stroke-linejoin="miter"/>
+  <path d="M135 302h282" fill="none" stroke="#fffdf8" stroke-width="20" stroke-linecap="round"/>
+</svg>

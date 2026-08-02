@@ -2,7 +2,7 @@
 
 [中文说明](README.zh-CN.md)
 
-Skills for Codex and Claude Code that catch the moment a situation becomes a verdict about you.
+Skills for Codex and Claude Code—and a private Chinese web app—that catch the moment a situation becomes a verdict about you.
 
 ```text
 You: "I haven't made money yet. I'm worthless."
@@ -14,7 +14,21 @@ Put the fact back: I haven't made money yet."
 
 **Not reassurance.** It names the linguistic shift once, puts the observable fact back, and gets out of the way.
 
-Codex + Claude Code · English + 中文 · No tracking or logging · No therapy voice · No forced positivity
+Codex + Claude Code · Chinese installable web app · English + 中文 · No tracking or logging · No therapy voice · No forced positivity
+
+## Use the Chinese web app
+
+**[Open the Chinese Inner Talk tool](https://slowrecover.github.io/inner-voice/app/zh/)**
+
+The mobile-first PWA identifies four common shifts—identity verdicts, always/never claims, catastrophizing, and mind-reading—then asks the user to write the observable fact themselves. It never generates the fact for them.
+
+- No account, registration, API, analytics, or backend.
+- Text is processed only in the current page and disappears on refresh or close.
+- The app shell can be cached for offline use; user input is never cached.
+- On iPhone, open it in Safari and choose **Share → Add to Home Screen**.
+- On Android, open it in Chrome and choose **Install app** or **Add to Home screen**.
+
+The app source lives in [`app/zh`](app/zh). An English web edition can later live beside it in `app/en`; the Skill packages remain separate under `skills/`.
 
 ## Choose a skill
 

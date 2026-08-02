@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f1e8">
+  <meta name="description" content="把自我否定的话还原成可观察的事实。纯前端处理，不登录、不上传、不保存。">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="内心话还原">
+  <title>纠正自我负面 Inner Talk 工具</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f5f1e8;
+      --surface: #fffdf8;
+      --ink: #24231f;
+      --muted: #6d6a61;
+      --line: #d9d3c6;
+      --accent: #285f4d;
+      --accent-soft: #e4eee8;
+      --danger: #8b3131;
+      --danger-soft: #f7e7e3;
+      --shadow: 0 18px 50px rgba(45, 41, 31, 0.08);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { min-height: 100%; background: var(--paper); }
+
+    body {
+      min-height: 100vh;
+      min-height: 100svh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 92% 5%, rgba(40, 95, 77, 0.07), transparent 28rem),
+        var(--paper);
+    }
+
+    button, textarea { font: inherit; }
+
+    button { -webkit-tap-highlight-color: transparent; }
+
+    .shell {
+      width: min(100% - 32px, 680px);
+      margin: 0 auto;
+      padding: max(24px, env(safe-area-inset-top)) 0 max(28px, env(safe-area-inset-bottom));
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: clamp(48px, 10vh, 92px);
+    }
+
+    .brand {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .install-button {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 14px;
+      color: var(--ink);
+      background: rgba(255, 253, 248, 0.74);
+      cursor: pointer;
+    }
+
+    .install-button[hidden] { display: none; }
+
+    h1 {
+      max-width: 12em;
+      margin: 0 0 16px;
+      font-size: clamp(34px, 9vw, 58px);
+      font-weight: 650;
+      letter-spacing: -0.045em;
+      line-height: 1.08;
+    }
+
+    .intro {
+      max-width: 34em;
+      margin: 0 0 40px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .card {
+      padding: clamp(22px, 6vw, 34px);
+      border: 1px solid rgba(217, 211, 198, 0.8);
+      border-radius: 24px;
+      background: rgba(255, 253, 248, 0.94);
+      box-shadow: var(--shadow);
+    }
+
+    .step-label {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: 0.1em;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: clamp(23px, 6vw, 30px);
+      font-weight: 650;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+    }
+
+    .helper {
+      margin: 0 0 20px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    textarea {
+      display: block;
+      width: 100%;
+      min-height: 148px;
+      resize: vertical;
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      color: var(--ink);
+      background: #fff;
+      font-size: 18px;
+      line-height: 1.55;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(40, 95, 77, 0.1);
+    }
+
+    textarea::placeholder { color: #9b978e; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .button {
+      min-height: 48px;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 20px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .button-primary { color: #fff; background: var(--accent); }
+
+    .button-secondary {
+      border: 1px solid var(--line);
+      color: var(--ink);
+      background: transparent;
+    }
+
+    .button:focus-visible, .install-button:focus-visible, summary:focus-visible {
+      outline: 3px solid rgba(40, 95, 77, 0.28);
+      outline-offset: 3px;
+    }
+
+    .error {
+      min-height: 1.5em;
+      margin: 10px 2px 0;
+      color: var(--danger);
+      font-size: 14px;
+    }
+
+    .notice {
+      margin: 0 0 24px;
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      border-radius: 4px 14px 14px 4px;
+      background: var(--accent-soft);
+      line-height: 1.65;
+    }
+
+    .notice strong { display: block; margin-bottom: 4px; }
+
+    .notice-danger {
+      border-left-color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .notice-danger a { color: var(--danger); font-weight: 750; }
+
+    .example {
+      margin: 18px 0 0;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .comparison { display: grid; gap: 12px; }
+
+    .quote {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .quote-fact {
+      border-color: rgba(40, 95, 77, 0.32);
+      background: var(--accent-soft);
+    }
+
+    .quote-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: 0.08em;
+    }
+
+    .quote p {
+      margin: 0;
+      overflow-wrap: anywhere;
+      font-size: 18px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .closing {
+      margin: 22px 0 0;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .how-to {
+      margin: 20px 0 0;
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+      color: var(--muted);
+    }
+
+    summary { cursor: pointer; font-weight: 700; color: var(--ink); }
+
+    .how-to ol { margin: 12px 0 0; padding-left: 22px; line-height: 1.7; }
+
+    footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    [hidden] { display: none !important; }
+
+    @media (max-width: 480px) {
+      .shell { width: min(100% - 24px, 680px); }
+      .topbar { margin-bottom: 52px; }
+      .card { border-radius: 20px; }
+      .button { flex: 1 1 auto; }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .card { animation: arrive 280ms ease-out both; }
+      @keyframes arrive {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="topbar">
+      <p class="brand">纠正自我负面 Inner Talk</p>
+      <button class="install-button" id="install-button" type="button">放到手机桌面</button>
+    </div>
+
+    <header>
+      <h1>先把事实放回来。</h1>
+      <p class="intro">有些话看起来在说一件事，主语却悄悄变成了你。这里不替你给答案，只帮你找到那一步。</p>
+    </header>
+
+    <section class="card" id="input-step" aria-labelledby="input-title">
+      <span class="step-label">01 / 03</span>
+      <h2 id="input-title">刚才心里那句话，原样写下来</h2>
+      <p class="helper">不需要写得合理，也不用先修改它。</p>
+      <textarea id="original-input" rows="5" maxlength="500" autocomplete="off" autocapitalize="sentences" placeholder="例如：我就是一个没用的人。" aria-describedby="original-error"></textarea>
+      <p class="error" id="original-error" role="alert"></p>
+      <div class="actions">
+        <button class="button button-primary" id="inspect-button" type="button">看看这句话里发生了什么</button>
+      </div>
+    </section>
+
+    <section class="card" id="fact-step" aria-labelledby="fact-title" hidden>
+      <span class="step-label">02 / 03</span>
+      <div class="notice" id="pattern-notice" aria-live="polite"></div>
+      <h2 id="fact-title">把那件事写下来</h2>
+      <p class="helper">只写能被看到、听到或数出来的内容。先不解释原因，也不评价自己。</p>
+      <textarea id="fact-input" rows="5" maxlength="500" autocomplete="off" autocapitalize="sentences" placeholder="例如：我这个月没有收入。" aria-describedby="fact-error fact-example"></textarea>
+      <p class="error" id="fact-error" role="alert"></p>
+      <p class="example" id="fact-example">不写：“我又因为懒惰浪费了一天。”<br>写：“我今天原计划做视频，但没有开始。”</p>
+      <div class="actions">
+        <button class="button button-primary" id="compare-button" type="button">对比这两句话</button>
+        <button class="button button-secondary" data-reset type="button">重新写</button>
+      </div>
+    </section>
+
+    <section class="card" id="comparison-step" aria-labelledby="comparison-title" hidden>
+      <span class="step-label">03 / 03</span>
+      <h2 id="comparison-title">同一件事，两种说法</h2>
+      <div class="comparison">
+        <div class="quote">
+          <span class="quote-label">你刚才说的</span>
+          <p id="original-output"></p>
+        </div>
+        <div class="quote quote-fact">
+          <span class="quote-label">实际发生的</span>
+          <p id="fact-output"></p>
+        </div>
+      </div>
+      <p class="closing">两句说的是同一件事。只有一句有下一步。</p>
+      <div class="actions">
+        <button class="button button-primary" id="copy-button" type="button">复制“实际发生的”</button>
+        <button class="button button-secondary" data-reset type="button">再写一句</button>
+      </div>
+    </section>
+
+    <section class="card" id="feeling-step" aria-labelledby="feeling-title" hidden>
+      <span class="step-label">这是一种感受</span>
+      <h2 id="feeling-title">感受本身不需要被纠正</h2>
+      <p class="helper">这句话在描述你此刻的体验，没有把它当成对你这个人的判决。如果它后面还有一句更苛刻的话，可以把那一句写下来。</p>
+      <div class="actions">
+        <button class="button button-primary" data-reset type="button">写下另一句话</button>
+      </div>
+    </section>
+
+    <section class="card" id="safety-step" aria-labelledby="safety-title" hidden>
+      <span class="step-label">先处理当下安全</span>
+      <div class="notice notice-danger">
+        <h2 id="safety-title">这个工具不适合处理你现在说的情况</h2>
+        <p>如果你可能马上伤害自己或别人，请立即联系当地急救服务，或联系一个现在能来到你身边的人。先不要独处。</p>
+        <p>在中国大陆可拨打 <a href="tel:120">120</a>（急救）或 <a href="tel:110">110</a>（报警）；在其他地区请拨打当地紧急号码。</p>
+      </div>
+      <div class="actions">
+        <button class="button button-secondary" data-reset type="button">清空这句话</button>
+      </div>
+    </section>
+
+    <details class="how-to" id="install-help">
+      <summary>怎样放到手机桌面？</summary>
+      <ol>
+        <li>iPhone：用 Safari 打开，点“分享”，再点“添加到主屏幕”。</li>
+        <li>Android：用 Chrome 打开，点浏览器菜单里的“安装应用”或“添加到主屏幕”。</li>
+      </ol>
+    </details>
+
+    <footer>
+      不登录，不上传，不保存。你输入的文字只在当前页面中处理，刷新或关闭后即消失。<br>
+      第一次打开需要联网；安装后可离线使用。
+    </footer>
+  </main>
+
+  <script id="classifier">
+    (() => {
+      const safetyPattern = /(不想活|活不下去|想死|自杀|结束生命|伤害自己|割腕|跳楼|跳下去|杀了自己|弄死自己|不能保证.{0,6}安全|撑不下去|杀了(?:他|她|他们)|伤害别人)/;
+      const feelingPattern = /^(?:我)?(?:现在|今天|最近|这几天|这段时间)?(?:一直)?(?:有点|很|非常|特别|挺|感到|觉得)?(?:难过|伤心|害怕|焦虑|紧张|生气|愤怒|失望|挫败|羞愧|内疚|孤独|疲惫|累|烦躁|不舒服)(?:了)?[。！!？?]?$/;
+      const patterns = [
+        {
+          type: "identity",
+          pattern: /(我这人|我就是|我是(?:个|一个)|我这辈子|我啥也不|我什么都不)/,
+          title: "这句话在评价你这个人。",
+          prompt: "刚才具体发生了什么？",
+        },
+        {
+          type: "absolute",
+          pattern: /(总是|从来|永远|一直|每次|没有一次)/,
+          title: "这句话把一些经历变成了一条规则。",
+          prompt: "只看这一次，具体发生了什么？",
+        },
+        {
+          type: "catastrophe",
+          pattern: /(完了|没救了|废了|毁了|来不及了)/,
+          title: "这句话已经说到了整个以后。",
+          prompt: "先只看今天，发生了什么？",
+        },
+        {
+          type: "mind-reading",
+          pattern: /(别人肯定|别人一定|大家都觉得|他们一定觉得|他们肯定觉得|别人会觉得|所有人都觉得)/,
+          title: "这里有一部分是对别人想法的猜测。",
+          prompt: "你实际看到或听到了什么？",
+        },
+      ];
+
+      function classifyInnerTalk(value) {
+        const text = String(value ?? "").trim().replace(/\s+/g, "");
+        if (!text) return { type: "empty" };
+        if (safetyPattern.test(text)) return { type: "safety" };
+        if (feelingPattern.test(text)) return { type: "feeling" };
+
+        const match = patterns.find((item) => item.pattern.test(text));
+        if (match) return { type: match.type, title: match.title, prompt: match.prompt };
+
+        return {
+          type: "unknown",
+          title: "没有识别到明显的自我判决。",
+          prompt: "它可能是在描述感受，也可能超出了这版工具能识别的范围。你仍然可以把它还原成事实。",
+        };
+      }
+
+      window.InnerVoice = Object.freeze({ classifyInnerTalk });
+    })();
+  </script>
+
+  <script>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+      const panels = ["input-step", "fact-step", "comparison-step", "feeling-step", "safety-step"];
+      const originalInput = $("original-input");
+      const factInput = $("fact-input");
+      const originalError = $("original-error");
+      const factError = $("fact-error");
+      const patternNotice = $("pattern-notice");
+      const installButton = $("install-button");
+      let deferredInstallPrompt = null;
+
+      function showPanel(id) {
+        panels.forEach((panelId) => { $(panelId).hidden = panelId !== id; });
+        $(id).scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      function reset() {
+        originalInput.value = "";
+        factInput.value = "";
+        originalError.textContent = "";
+        factError.textContent = "";
+        $("original-output").textContent = "";
+        $("fact-output").textContent = "";
+        $("copy-button").textContent = "复制“实际发生的”";
+        showPanel("input-step");
+        originalInput.focus();
+      }
+
+      $("inspect-button").addEventListener("click", () => {
+        const original = originalInput.value.trim();
+        const result = window.InnerVoice.classifyInnerTalk(original);
+        originalError.textContent = "";
+
+        if (result.type === "empty") {
+          originalError.textContent = "先写下那句话。";
+          originalInput.focus();
+          return;
+        }
+
+        if (result.type === "safety") {
+          showPanel("safety-step");
+          return;
+        }
+
+        if (result.type === "feeling") {
+          showPanel("feeling-step");
+          return;
+        }
+
+        patternNotice.replaceChildren();
+        const title = document.createElement("strong");
+        title.textContent = result.title;
+        const prompt = document.createElement("span");
+        prompt.textContent = result.prompt;
+        patternNotice.append(title, prompt);
+        showPanel("fact-step");
+        factInput.focus();
+      });
+
+      $("compare-button").addEventListener("click", () => {
+        const fact = factInput.value.trim();
+        factError.textContent = "";
+        if (!fact) {
+          factError.textContent = "这一步由你来写：刚才实际发生了什么？";
+          factInput.focus();
+          return;
+        }
+
+        $("original-output").textContent = originalInput.value.trim();
+        $("fact-output").textContent = fact;
+        showPanel("comparison-step");
+      });
+
+      $("copy-button").addEventListener("click", async (event) => {
+        try {
+          await navigator.clipboard.writeText(factInput.value.trim());
+          event.currentTarget.textContent = "已复制";
+        } catch {
+          event.currentTarget.textContent = "长按下面的句子复制";
+        }
+      });
+
+      document.querySelectorAll("[data-reset]").forEach((button) => button.addEventListener("click", reset));
+
+      window.addEventListener("beforeinstallprompt", (event) => {
+        event.preventDefault();
+        deferredInstallPrompt = event;
+        installButton.hidden = false;
+      });
+
+      installButton.addEventListener("click", async () => {
+        if (deferredInstallPrompt) {
+          deferredInstallPrompt.prompt();
+          await deferredInstallPrompt.userChoice;
+          deferredInstallPrompt = null;
+          installButton.hidden = true;
+          return;
+        }
+        $("install-help").open = true;
+        $("install-help").scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+
+      if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true) {
+        installButton.hidden = true;
+      }
+
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js"));
+      }
+    })();
+  </script>
+</body>
+</html>
